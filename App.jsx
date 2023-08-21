@@ -35,7 +35,7 @@ export default function App() {
   }, [isActivate, time])
   
 
-  function handleStartStop(){
+  function handleStartStop(){ 
     // playSound()
     setIsActivate(!isActivate)
   }
