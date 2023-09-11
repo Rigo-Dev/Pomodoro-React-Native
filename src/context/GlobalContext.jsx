@@ -2,7 +2,7 @@ import { createContext, useState } from "react";
 
 export const globalContext = createContext();
 
-const GlobalContext = ({children}) => {
+export const GlobalContext = ({children}) => {
   const [time, setTime] = useState(25 * 60)
 
     return (
@@ -12,4 +12,3 @@ const GlobalContext = ({children}) => {
   )
 }
 
-export default GlobalContext
