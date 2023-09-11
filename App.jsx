@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Header from "./src/components/Header";
 import Timer from "./src/components/Timer";
 import { Audio } from 'expo-av'
+import GlobalContext from "./src/context/GlobalContext";
 
 const colors = ["#F7DC6F", "#A2D9CE", "#D7BDE2"];
 
@@ -12,7 +13,6 @@ export default function App() {
   const [time, setTime] = useState(25 * 60);
   const [currentTime, setCurrentTime] = useState("POMO" | "SHORT" | "BREAK");
   const [isActivate, setIsActivate] = useState(false)
-
 
   useEffect(() => {
    let interval = null
@@ -46,8 +46,10 @@ export default function App() {
 //     )
 //     await sound.playAsync()
 //   }
+  
 
   return (
+    <GlobalContext>
     <SafeAreaView style={[styles.container, {backgroundColor: colors[currentTime]}]}>
       <View style={{ flex: 1, paddingHorizontal: 15, paddingTop: Platform.OS === 'android' && 30 }}>
         <Text style={styles.text}>Pomodoro</Text>
@@ -63,6 +65,7 @@ export default function App() {
         </TouchableOpacity>
       </View>
     </SafeAreaView>
+    </GlobalContext>
   );
 }
 
