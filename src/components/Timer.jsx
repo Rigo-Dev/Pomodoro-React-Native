@@ -1,12 +1,15 @@
+import { useContext } from "react";
 import { Text, View, StyleSheet } from "react-native"
+import { globalContext } from "../context/GlobalContext";
 
-export default function Timer({ time }) {
+export default function Timer() {
+  const {time} = useContext(globalContext);
 
     const formattedTime = `${Math.floor(time / 60).toString().padStart(2,"0")}:${(time % 60).toString().padStart(2,"0")}`
 
   return (
     <View style={styles.container}>
-        <Text style={styles.time}>{formattedTime}</Text>
+         <Text style={styles.time}>{formattedTime}</Text> 
     </View>
   )
 }
