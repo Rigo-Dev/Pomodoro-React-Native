@@ -1,9 +1,10 @@
 import { StatusBar } from "expo-status-bar";
 import { Platform, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Header from "./src/components/Header";
 import Timer from "./src/components/Timer";
 import { Audio } from 'expo-av'
+import GlobalContext from "./src/context/GlobalContext";
 
 const colors = ["#F7DC6F", "#A2D9CE", "#D7BDE2"];
 
@@ -13,19 +14,42 @@ export default function App() {
   const [currentTime, setCurrentTime] = useState("POMO" | "SHORT" | "BREAK");
   const [isActivate, setIsActivate] = useState(false)
 
-  function handleStartStop(){
+  useEffect(() => {
+   let interval = null
+
+   if(isActivate){
+    interval = setInterval(() =>{
+      setTime(time-1)
+    }, 1000)
+   }else{
+    clearInterval(interval)
+   }
+
+   if (time == 0){
+    setIsActivate(false)
+    setIsWorking(prev => !prev )
+    setTime(isWorking ? 300 : 1500)
+   }
+
+   return () => clearInterval(interval)
+  }, [isActivate, time])
+  
+
+  function handleStartStop(){ 
     // playSound()
     setIsActivate(!isActivate)
   }
 
- async function playSound(){
-    const { sound } = await Audio.Sound.createAsync(
-      require('./assets/click.mp3')
-    )
-    await sound.playAsync()
-  }
+//  async function playSound(){
+//     const { sound } = await Audio.Sound.createAsync(
+//       require('./assets/click.mp3')
+//     )
+//     await sound.playAsync()
+//   }
+  
 
   return (
+    <GlobalContext>
     <SafeAreaView style={[styles.container, {backgroundColor: colors[currentTime]}]}>
       <View style={{ flex: 1, paddingHorizontal: 15, paddingTop: Platform.OS === 'android' && 30 }}>
         <Text style={styles.text}>Pomodoro</Text>
@@ -41,6 +65,7 @@ export default function App() {
         </TouchableOpacity>
       </View>
     </SafeAreaView>
+    </GlobalContext>
   );
 }
 
